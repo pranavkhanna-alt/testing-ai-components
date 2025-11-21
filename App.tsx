@@ -33,11 +33,11 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 pb-20 selection:bg-freo-500/30">
+    <div className="min-h-screen bg-black text-white pb-20 selection:bg-freo-500/30">
       {/* Background Elements */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-freo-900/20 blur-[100px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-accent-purple/10 blur-[100px]" />
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-zinc-900/40 blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-freo-900/10 blur-[120px]" />
       </div>
 
       <div className="relative z-10 container mx-auto px-4">
@@ -56,20 +56,20 @@ const App: React.FC = () => {
 
             {/* Info Section */}
             <div className="max-w-2xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-center opacity-60">
-               <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
+               <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800">
                    <div className="text-2xl mb-2">💬</div>
-                   <h3 className="font-bold text-slate-200 mb-1">Answer</h3>
-                   <p className="text-sm text-slate-400">Tell us where the money goes.</p>
+                   <h3 className="font-bold text-zinc-200 mb-1">Answer</h3>
+                   <p className="text-sm text-zinc-400">Tell us where the money goes.</p>
                </div>
-               <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
+               <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800">
                    <div className="text-2xl mb-2">🤖</div>
-                   <h3 className="font-bold text-slate-200 mb-1">AI Analyze</h3>
-                   <p className="text-sm text-slate-400">Gemini judges your choices.</p>
+                   <h3 className="font-bold text-zinc-200 mb-1">AI Analyze</h3>
+                   <p className="text-sm text-zinc-400">Gemini judges your choices.</p>
                </div>
-               <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
+               <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800">
                    <div className="text-2xl mb-2">🚀</div>
-                   <h3 className="font-bold text-slate-200 mb-1">Glow Up</h3>
-                   <p className="text-sm text-slate-400">Get roasted into better habits.</p>
+                   <h3 className="font-bold text-zinc-200 mb-1">Glow Up</h3>
+                   <p className="text-sm text-zinc-400">Get roasted into better habits.</p>
                </div>
             </div>
           </div>
@@ -80,7 +80,7 @@ const App: React.FC = () => {
              <div className="text-center mt-12">
                  <button 
                     onClick={handleReset}
-                    className="px-6 py-3 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-all font-medium"
+                    className="px-6 py-3 rounded-full bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 transition-all font-medium"
                  >
                     Check Another Vibe
                  </button>

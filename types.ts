@@ -38,8 +38,9 @@ export interface QuestionnaireData {
   monthlyIncome: string;
   rentAndEmi: string; // Survival (Home loans, Rent)
   groceries: string; // Survival (Essentials)
-  foodAndDining: string; // Brain Rot potential (Ordering in)
+  foodAndDining: string; // Leisure (Ordering in)
   vices: string; // Specific bad habits (Cigs, Alcohol)
   shoppingAndEntertainment: string; // Flex (Trips, Clothes)
   investments: string; // Future You (SIPs, Gold)
+  hasInsurance: string; // 'yes' or 'no'
 }
