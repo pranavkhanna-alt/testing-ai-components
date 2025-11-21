@@ -1,0 +1,5 @@
+{
+  "name": "Copy of Freo Financial Vibe Check",
+  "description": "A witty, Gen-Z style financial assistant that analyzes your transaction text or screenshots to give you a 'Vibe Check', spend summary, and personalized tips using Gemini 2.5 Flash.",
+  "requestFramePermissions": []
+}
