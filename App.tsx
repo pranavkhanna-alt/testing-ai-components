@@ -11,6 +11,8 @@ const App: React.FC = () => {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  console.log("API Key:", process.env.REACT_APP_API_KEY);
+
   const handleAnalyze = async (data: QuestionnaireData) => {
     setIsLoading(true);
     setError(null);
