@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-import { AnalysisResult, ToastType } from '../types';
+import { AnalysisResult, ToastType } from '../../types';
 import { Flame, PartyPopper, Lightbulb, ArrowRight, Dumbbell, TrendingUp, CreditCard, ShieldCheck, Coins, Wallet, Share2 } from 'lucide-react';
 
 interface ResultsViewProps {

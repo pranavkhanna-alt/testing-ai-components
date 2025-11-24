@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { AnalysisResult, ToastType, QuestionnaireData } from "../types";
+import { AnalysisResult, ToastType, QuestionnaireData } from "../../types";
 
 const getClient = () => {
   const apiKey = process.env.API_KEY;

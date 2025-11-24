@@ -3,7 +3,7 @@ import Header from './components/Header';
 import Questionnaire from './components/Questionnaire';
 import ResultsView from './components/ResultsView';
 import { analyzeFinancialData } from './services/geminiService';
-import { AnalysisResult, QuestionnaireData } from './types';
+import { AnalysisResult, QuestionnaireData } from './../types';
 import { AlertCircle } from 'lucide-react';
 
 const App: React.FC = () => {

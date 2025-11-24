@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight, IndianRupee, ChevronLeft, ThumbsUp, ThumbsDown } from 'lucide-react';
-import { QuestionnaireData } from '../types';
+import { QuestionnaireData } from '../../types';
 
 interface QuestionnaireProps {
   onAnalyze: (data: QuestionnaireData) => void;
