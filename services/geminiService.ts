@@ -25,22 +25,22 @@ const SCHEMA = {
       },
     },
     vibeScore: { type: Type.INTEGER, description: "A score from 0 to 100 indicating financial health." },
-    genZVibeLabel: { type: Type.STRING, description: "A 1-3 word slang term for their score. NO punctuation. NO exclamation marks." },
+    genZVibeLabel: { type: Type.STRING, description: "A 1-3 word descriptive title for their financial style. e.g. 'Financial Guru', 'Impulse Buyer'. No offensive slang." },
     roastOrToastType: { type: Type.STRING, enum: [ToastType.ROAST, ToastType.TOAST] },
-    roastOrToastMessage: { type: Type.STRING, description: "A witty roast or congratulatory toast. Adhere to the specific tone guidelines." },
+    roastOrToastMessage: { type: Type.STRING, description: "A witty observation or congratulatory message. Professional but engaging. NO insults." },
     recommendedProduct: { type: Type.STRING, description: "The specific Freo product recommendation." },
-    freoTip: { type: Type.STRING, description: "A persuasive pitch explaining WHY this specific product helps them. Includes insurance advice if applicable." },
-    personaTitle: { type: Type.STRING, description: "A cool title for the user's financial persona." },
-    summaryText: { type: Type.STRING, description: "A short, witty Gen-Z style summary of the spending habits." },
+    freoTip: { type: Type.STRING, description: "A helpful pitch explaining WHY this specific product helps them. Includes insurance advice if applicable." },
+    personaTitle: { type: Type.STRING, description: "A creative title for the user's financial persona." },
+    summaryText: { type: Type.STRING, description: "A short, witty summary of the spending habits." },
     swapSuggestions: {
       type: Type.ARRAY,
-      description: "Real-time life improvement swaps. Replace bad habits with self-improvement.",
+      description: "Real-time life improvement swaps. Replace expensive habits with smarter choices.",
       items: {
         type: Type.OBJECT,
         properties: {
-            habitToBreak: { type: Type.STRING, description: "The bad spending habit." },
-            betterAlternative: { type: Type.STRING, description: "The better life choice." },
-            projectedImpact: { type: Type.STRING, description: "The result." }
+            habitToBreak: { type: Type.STRING, description: "The spending habit." },
+            betterAlternative: { type: Type.STRING, description: "The smarter choice." },
+            projectedImpact: { type: Type.STRING, description: "The benefit." }
         }
       }
     }
@@ -54,7 +54,7 @@ export const analyzeFinancialData = async (
   const ai = getClient();
 
   const prompt = `
-    You are a Gen-Z financial assistant for 'Freo'. 
+    You are a witty, helpful, and professional financial assistant for 'Freo'. 
     Analyze the user's financial profile based on their answers.
     
     USER DATA:
@@ -65,7 +65,7 @@ export const analyzeFinancialData = async (
     - Vices (Cigs/Alcohol): ₹${data.vices}
     - The Flex (Shopping/Fun/Trips): ₹${data.shoppingAndEntertainment}
     - Future You (Investments/SIPs): ₹${data.investments}
-    - Has Insurance: ${data.hasInsurance} (If 'no', this is a gap)
+    - Has Insurance: ${data.hasInsurance}
     
     GOALS:
     1. **Categorize**: Group the amounts into the 4 Life Components:
@@ -76,34 +76,33 @@ export const analyzeFinancialData = async (
     
     2. **Vibe Score & Label**: 
        - Calculate 0-100. 
-       - High Score: >20% in 'Future You' AND Has Insurance = 'Yes'.
-       - Deduct points heavily if Has Insurance = 'No'.
-       - Label: Slang (e.g., "Down Bad", "Academic Weapon", "CEO Mindset"). Keep it simple, NO punctuation, NO "!" characters.
+       - Label: Use universal, descriptive terms (e.g., "Budget Pro", "Carefree Spender", "Balanced Planner"). 
+       - STRICTLY NO obscure Gen-Z slang (like "Down Bad" or "NPC"). Make it understandable for ages 18-60.
 
-    3. **Tone & Roast/Toast Guidelines (CRITICAL)**: 
-       - **Glow Up Logic**: 
-         - IF (Food/Dining <= 3000 AND Vices <= 2000): Use "less rude verbiage". Be encouraging/constructive.
-         - IF (Food/Dining > 3000 OR Vices > 2000): Be "more open", direct, and witty. Roast the specific high spend.
+    3. **Tone & Language Guidelines**: 
+       - **Tone**: Witty, engaging, and professional. Think "smart financial coach".
+       - **Prohibited**: Do NOT use offensive, abusive, or rude language. Do not insult the user.
+       - **Critique**: If spending is bad, provide a "Reality Check" rather than a mean roast. Be constructive.
        
-    4. **Freo Product Match**:
-       - **Step 1: Select Base Product**:
-         - **Freo Pay**: If high daily small spends (Food, Dining, Leisure).
-         - **Freo Personal Loan**: If high debt, EMIs, or big 'Flex' spending.
-         - **Freo Gold Loan**: If 'Survival Mode' expenses > 60% of income.
+    4. **Freo Product Match (Smart Logic)**:
+       - **Step 1: Determine Base Product**:
+         - **Freo Pay**: High daily small spends (Food, Dining).
+         - **Freo Personal Loan**: High big-ticket spend or debt consolidation needs.
+         - **Freo Gold Loan**: High survival costs (needs liquidity).
+         - **Freo Save**: If they have surplus but no investments.
        
-       - **Step 2: Insurance Check**:
+       - **Step 2: Insurance Logic (Add-on)**:
          - IF 'Has Insurance' is 'no': 
-           - Set \`recommendedProduct\` to "{Base Product} + Freo Insurance".
-           - In \`freoTip\`: Pitch the base product, then explicitly ADD: "Also, be a pro and start insuring yourself with Freo Insurance."
+           - **Action**: You MUST recommend the Base Product AND Insurance together.
+           - **Output Format**: "{Base Product} + Freo Insurance"
+           - **Tip Text**: Pitch the base product first, then add a polite but firm nudge: "Also, securing your future is non-negotiable—consider adding Freo Insurance."
          - IF 'Has Insurance' is 'yes':
-           - Set \`recommendedProduct\` to just the {Base Product}.
-           - \`freoTip\` focuses on the base product.
+           - Recommend just the Base Product.
 
     5. **Swaps**:
-       - If spends are low (<=3000/2000), suggest subtle optimizations.
-       - If spends are high, suggest hard stops (Gym instead of Bar).
+       - Suggest practical changes (e.g., "Home cooking" vs "Ordering out").
 
-    Tone: Gen Z slang but adjust rudeness based on the spend thresholds.
+    Tone: Common, accessible English. No slang that requires a dictionary.
   `;
 
   try {
@@ -115,7 +114,7 @@ export const analyzeFinancialData = async (
       config: {
         responseMimeType: "application/json",
         responseSchema: SCHEMA,
-        temperature: 0.8,
+        temperature: 0.7,
       },
     });
 

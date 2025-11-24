@@ -10,70 +10,70 @@ interface QuestionnaireProps {
 const STEPS = [
   {
     id: 'monthlyIncome',
-    question: "First off, what's the monthly loot?",
-    subtext: "Salary, side hustles, that money grandma gave you - total it up.",
+    question: "First off, what's your total monthly income?",
+    subtext: "Salary, pocket money, freelance work, side hustles - total it up.",
     icon: "💸",
     placeholder: "e.g. 80000",
     type: 'number'
   },
   {
     id: 'rentAndEmi',
-    question: "Adulting 101: Rent or Home Loans?",
-    subtext: "Keeping a roof over your head. Any EMIs haunting you?",
+    question: "Fixed monthly commitments?",
+    subtext: "Rent, Home Loans, or other EMIs you can't avoid.",
     icon: "🏠",
     placeholder: "e.g. 25000",
     type: 'number'
   },
   {
     id: 'groceries',
-    question: "Fuel for the machine: Groceries & Bills?",
-    subtext: "The boring stuff you actually need to survive (Toothpaste, WiFi, Power).",
+    question: "Essentials & Bills?",
+    subtext: "Groceries, electricity, wifi, and other survival basics.",
     icon: "🥦",
     placeholder: "e.g. 6000",
     type: 'number'
   },
   {
     id: 'vices',
-    question: "Real talk... Cigs, Vapes, or Drinks?",
-    subtext: "How many packs a day? Weekend benders? (We won't judge... much).",
-    icon: "🚬",
+    question: "Social & Lifestyle Spend?",
+    subtext: "Drinks, outings, or habits like smoking/vaping.",
+    icon: "🥂",
     placeholder: "e.g. 4000",
     type: 'number'
   },
   {
     id: 'foodAndDining',
-    question: "Kitchen vs. The App: Ordering in?",
-    subtext: "Swiggy, Zomato, Starbucks runs because 'cooking is hard'.",
+    question: "Food & Dining Out?",
+    subtext: "Ordering in via apps, cafes, or restaurants.",
     icon: "🍔",
     placeholder: "e.g. 9000",
     type: 'number'
   },
   {
     id: 'shoppingAndEntertainment',
-    question: "Retail Therapy & The Flex?",
-    subtext: "New kicks, gadgets, movies, or 'accidental' Amazon purchases.",
+    question: "Shopping & Entertainment?",
+    subtext: "Clothes, gadgets, movies, subscriptions, trips.",
     icon: "🛍️",
     placeholder: "e.g. 7000",
     type: 'number'
   },
   {
     id: 'investments',
-    question: "Smart Moves: Are we investing?",
-    subtext: "SIPs, Stocks, Gold? Paying 'Future You' or just vibing?",
+    question: "Investments & Savings?",
+    subtext: "SIPs, Stocks, Gold, or money sent to savings.",
     icon: "🚀",
     placeholder: "e.g. 10000",
     type: 'number'
   },
   {
     id: 'hasInsurance',
-    question: "Last one: Got Insurance?",
-    subtext: "Health or Life. Are you covered if things go south?",
+    question: "Do you have Health/Life Insurance?",
+    subtext: "Are you financially covered for emergencies?",
     icon: "🛡️",
     placeholder: "",
     type: 'options',
     options: [
-      { value: 'yes', label: 'Yes, I\'m covered', icon: ThumbsUp },
-      { value: 'no', label: 'Nah, living on the edge', icon: ThumbsDown }
+      { value: 'yes', label: 'Yes, I am covered', icon: ThumbsUp },
+      { value: 'no', label: 'No, not yet', icon: ThumbsDown }
     ]
   }
 ];
@@ -136,14 +136,14 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ onAnalyze, isLoading }) =
               {currentQuestion.question}
             </h2>
             
-            <p className="text-zinc-400 text-lg mb-8">
+            <p className="text-zinc-300 text-lg mb-8">
               {currentQuestion.subtext}
             </p>
 
             {currentQuestion.type === 'number' ? (
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <IndianRupee className="h-5 w-5 text-zinc-500" />
+                    <IndianRupee className="h-5 w-5 text-zinc-400" />
                   </div>
                   <input
                     type="number"
@@ -181,7 +181,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ onAnalyze, isLoading }) =
               onClick={handleBack}
               disabled={currentStep === 0}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                currentStep === 0 ? 'text-zinc-600 cursor-not-allowed' : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
+                currentStep === 0 ? 'text-zinc-700 cursor-not-allowed' : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
               }`}
             >
               <ChevronLeft className="w-5 h-5" />
@@ -194,7 +194,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ onAnalyze, isLoading }) =
                   disabled={!answers[currentQuestion.id] || isLoading}
                   className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all duration-300 ${
                     !answers[currentQuestion.id] || isLoading
-                      ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
+                      ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed'
                       : 'bg-freo-500 hover:bg-freo-600 text-white shadow-lg shadow-freo-500/25 hover:scale-105'
                   }`}
                 >
@@ -202,17 +202,16 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ onAnalyze, isLoading }) =
                     <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></span>
                   ) : (
                     <>
-                      {currentStep === STEPS.length - 1 ? 'Reveal My Vibe' : 'Next'}
+                      {currentStep === STEPS.length - 1 ? 'Analyze Profile' : 'Next'}
                       {currentStep !== STEPS.length - 1 && <ArrowRight className="w-5 h-5" />}
                     </>
                   )}
                 </button>
             )}
-            {/* Hide Next button for options as selection auto-advances, but show loader if it's the last step and loading */}
             {currentQuestion.type === 'options' && isLoading && (
                  <div className="flex items-center gap-2 text-freo-400 font-bold animate-pulse">
                     <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-freo-400"></span>
-                    Calculating...
+                    Analyzing...
                  </div>
             )}
         </div>

@@ -21,7 +21,7 @@ const App: React.FC = () => {
       setResult(analysis);
     } catch (err: any) {
       console.error(err);
-      setError("Oops! The financial spirits are confused. Please try again or check your API key.");
+      setError("Oops! The financial AI had a hiccup. Please try again or check your API key.");
     } finally {
       setIsLoading(false);
     }
@@ -55,21 +55,21 @@ const App: React.FC = () => {
             )}
 
             {/* Info Section */}
-            <div className="max-w-2xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-center opacity-60">
+            <div className="max-w-2xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-center opacity-80">
                <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800">
                    <div className="text-2xl mb-2">💬</div>
-                   <h3 className="font-bold text-zinc-200 mb-1">Answer</h3>
-                   <p className="text-sm text-zinc-400">Tell us where the money goes.</p>
+                   <h3 className="font-bold text-white mb-1">Answer</h3>
+                   <p className="text-sm text-zinc-300">Tell us where the money goes.</p>
                </div>
                <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800">
                    <div className="text-2xl mb-2">🤖</div>
-                   <h3 className="font-bold text-zinc-200 mb-1">AI Analyze</h3>
-                   <p className="text-sm text-zinc-400">Gemini judges your choices.</p>
+                   <h3 className="font-bold text-white mb-1">AI Analyze</h3>
+                   <p className="text-sm text-zinc-300">Gemini evaluates your choices.</p>
                </div>
                <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800">
                    <div className="text-2xl mb-2">🚀</div>
-                   <h3 className="font-bold text-zinc-200 mb-1">Glow Up</h3>
-                   <p className="text-sm text-zinc-400">Get roasted into better habits.</p>
+                   <h3 className="font-bold text-white mb-1">Level Up</h3>
+                   <p className="text-sm text-zinc-300">Get better habits & products.</p>
                </div>
             </div>
           </div>
@@ -80,9 +80,9 @@ const App: React.FC = () => {
              <div className="text-center mt-12">
                  <button 
                     onClick={handleReset}
-                    className="px-6 py-3 rounded-full bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 transition-all font-medium"
+                    className="px-6 py-3 rounded-full bg-zinc-900 hover:bg-zinc-800 text-zinc-200 hover:text-white border border-zinc-800 transition-all font-medium"
                  >
-                    Check Another Vibe
+                    Check Another Profile
                  </button>
              </div>
           </div>

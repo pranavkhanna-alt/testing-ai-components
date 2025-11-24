@@ -47,7 +47,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
   };
 
   const handleShare = () => {
-      const text = `💸 Freo Financial Vibe Check 💸\n\nMy Vibe: ${cleanVerdictLabel} ${data.vibeScore > 70 ? '🔥' : '💀'}\nScore: ${data.vibeScore}/100\n\nAI Verdict: "${data.roastOrToastMessage}"\n\nDare to check yours?`;
+      const text = `💸 Freo Financial Vibe Check 💸\n\nMy Persona: ${data.personaTitle}\nScore: ${data.vibeScore}/100\n\nVerdict: "${data.roastOrToastMessage}"\n\nCheck yours at Freo!`;
       const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
       window.open(url, '_blank');
   };
@@ -57,13 +57,13 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
       
       {/* Persona Header */}
       <div className="text-center space-y-2">
-        <span className="inline-block px-4 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 text-sm font-medium uppercase tracking-wider">
+        <span className="inline-block px-4 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 text-sm font-medium uppercase tracking-wider">
             Your Financial Persona
         </span>
         <h2 className="text-4xl md:text-5xl font-black text-white">
           {data.personaTitle}
         </h2>
-        <p className="text-xl text-zinc-400 max-w-2xl mx-auto font-light italic">
+        <p className="text-xl text-zinc-300 max-w-2xl mx-auto font-light italic">
           "{data.summaryText}"
         </p>
       </div>
@@ -98,14 +98,14 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <span className="text-6xl font-black text-white">{data.vibeScore}</span>
-                    <span className="text-xs font-bold uppercase tracking-widest text-zinc-500">Vibe Score</span>
+                    <span className="text-xs font-bold uppercase tracking-widest text-zinc-400">Financial Score</span>
                 </div>
             </div>
 
             <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-3 w-full">
                  <div className="space-y-1 w-full">
-                    <span className="text-zinc-500 text-sm uppercase tracking-wide">Verdict</span>
-                    <div className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-freo-300 to-accent-purple">
+                    <span className="text-zinc-400 text-sm uppercase tracking-wide">Financial Style</span>
+                    <div className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-freo-300 to-white">
                         {cleanVerdictLabel}
                     </div>
                  </div>
@@ -116,7 +116,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
                         className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#25D366]/10 text-[#25D366] border border-[#25D366]/30 hover:bg-[#25D366]/20 transition-colors font-bold"
                     >
                         <Share2 className="w-4 h-4" />
-                        Share on WA
+                        Share Result
                     </button>
                  </div>
             </div>
@@ -124,9 +124,9 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
 
         {/* Spend Chart & Breakdown */}
         <div className="bg-zinc-900/80 backdrop-blur border border-zinc-800 rounded-2xl p-6 flex flex-col hover:border-freo-500/30 transition-colors">
-             <h3 className="text-zinc-300 font-bold mb-6 flex items-center gap-2">
+             <h3 className="text-white font-bold mb-6 flex items-center gap-2">
                 <span className="bg-freo-500/20 p-1.5 rounded text-freo-400">📊</span> 
-                Life Components Breakdown
+                Spend Breakdown
              </h3>
              
              <div className="flex flex-col md:flex-row items-center gap-8">
@@ -159,7 +159,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
                 {/* Detailed Breakdown List */}
                 <div className="w-full md:w-1/2 space-y-5">
                     <div className="flex justify-between items-end border-b border-zinc-800 pb-2">
-                        <span className="text-zinc-500 text-sm font-medium uppercase tracking-wider">Total Spend</span>
+                        <span className="text-zinc-400 text-sm font-medium uppercase tracking-wider">Total Monthly Spend</span>
                         <span className="text-3xl font-bold text-white tracking-tight">₹{totalSpend.toLocaleString()}</span>
                     </div>
 
@@ -171,7 +171,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
                                         <span className="w-3 h-3 rounded-full shadow-[0_0_8px]" style={{backgroundColor: item.color, boxShadow: `0 0 8px ${item.color}40`}}></span>
                                         {item.name}
                                     </span>
-                                    <span className="text-zinc-400 font-mono">₹{item.value.toLocaleString()}</span>
+                                    <span className="text-zinc-300 font-mono">₹{item.value.toLocaleString()}</span>
                                 </div>
                                 {/* Progress Bar */}
                                 <div className="h-2 w-full bg-black rounded-full overflow-hidden border border-zinc-800">
@@ -188,7 +188,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
         </div>
       </div>
 
-      {/* Glow Up Plan (Real-time picture) */}
+      {/* Improvement Plan */}
       {data.swapSuggestions && data.swapSuggestions.length > 0 && (
           <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 relative overflow-hidden shadow-2xl shadow-black/50">
               <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
@@ -201,13 +201,9 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
                         <Dumbbell className="w-6 h-6" />
                     </div>
                     <div>
-                        <h3 className="font-bold text-2xl text-white">The Glow Up Plan</h3>
-                        <p className="text-zinc-400 text-sm">Real-time swaps to fix your life components.</p>
+                        <h3 className="font-bold text-2xl text-white">Smart Swaps</h3>
+                        <p className="text-zinc-300 text-sm">Actionable steps to improve your financial health.</p>
                     </div>
-                  </div>
-                  <div className="text-right hidden md:block">
-                      <span className="text-xs font-bold text-freo-500 uppercase tracking-widest">Strategy</span>
-                      <div className="text-zinc-300 font-medium">Invest in "Future You" 🚀</div>
                   </div>
               </div>
 
@@ -216,8 +212,8 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
                       <div key={idx} className="bg-black rounded-xl p-5 flex flex-col md:flex-row items-center gap-6 border border-zinc-800 hover:border-accent-teal/50 transition-all group">
                           
                           {/* Habit to Break */}
-                          <div className="flex-1 text-center md:text-left w-full md:w-auto bg-red-500/10 p-3 rounded-lg border border-red-500/10">
-                              <div className="text-[10px] text-red-400 font-black uppercase tracking-widest mb-1">STOP THE ROT 🛑</div>
+                          <div className="flex-1 text-center md:text-left w-full md:w-auto bg-zinc-900/50 p-3 rounded-lg border border-zinc-800">
+                              <div className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-1">INSTEAD OF</div>
                               <div className="text-zinc-300 font-medium text-lg group-hover:text-white transition-colors">{swap.habitToBreak}</div>
                           </div>
                           
@@ -229,14 +225,14 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
                           </div>
 
                           {/* Better Alternative */}
-                          <div className="flex-1 text-center md:text-left w-full md:w-auto bg-green-500/10 p-3 rounded-lg border border-green-500/10">
-                              <div className="text-[10px] text-green-400 font-black uppercase tracking-widest mb-1">START THE PLOT ✅</div>
+                          <div className="flex-1 text-center md:text-left w-full md:w-auto bg-freo-900/10 p-3 rounded-lg border border-freo-500/20">
+                              <div className="text-[10px] text-freo-400 font-bold uppercase tracking-widest mb-1">TRY THIS</div>
                               <div className="text-white font-bold text-lg">{swap.betterAlternative}</div>
                           </div>
 
                           {/* Impact */}
                           <div className="md:border-l border-zinc-800 md:pl-6 flex-1 text-center md:text-right w-full md:w-auto">
-                              <div className="text-[10px] text-freo-400 font-black uppercase tracking-widest mb-1">THE OUTCOME</div>
+                              <div className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mb-1">BENEFIT</div>
                               <div className="text-accent-teal font-medium italic text-lg">"{swap.projectedImpact}"</div>
                           </div>
                       </div>
@@ -245,21 +241,21 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
           </div>
       )}
 
-      {/* Roast/Toast & Tip Grid */}
+      {/* Verdict & Tip Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
-          {/* Roast/Toast Card */}
+          {/* Verdict Card */}
           <div className={`rounded-2xl p-6 border relative overflow-hidden ${
               isRoast 
-              ? 'bg-red-950/20 border-red-500/30' 
-              : 'bg-green-950/20 border-green-500/30'
+              ? 'bg-red-950/10 border-red-500/20' 
+              : 'bg-green-950/10 border-green-500/20'
           }`}>
               <div className="flex items-center gap-3 mb-4">
-                  <div className={`p-2 rounded-lg ${isRoast ? 'bg-red-500/20 text-red-400' : 'bg-green-500/20 text-green-400'}`}>
+                  <div className={`p-2 rounded-lg ${isRoast ? 'bg-red-500/10 text-red-400' : 'bg-green-500/10 text-green-400'}`}>
                       {isRoast ? <Flame className="w-6 h-6" /> : <PartyPopper className="w-6 h-6" />}
                   </div>
                   <h3 className={`font-bold text-xl ${isRoast ? 'text-red-100' : 'text-green-100'}`}>
-                      {isRoast ? 'The Roast' : 'The Toast'}
+                      {isRoast ? 'The Reality Check' : 'The Kudos'}
                   </h3>
               </div>
               <p className="text-zinc-200 text-lg leading-relaxed italic opacity-90">
@@ -276,7 +272,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
                       <Lightbulb className="w-6 h-6" />
                   </div>
                   <h3 className="font-bold text-xl text-freo-100">
-                      Freo Advice
+                      Freo Recommendation
                   </h3>
               </div>
               
