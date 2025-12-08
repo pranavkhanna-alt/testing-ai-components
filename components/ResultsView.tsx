@@ -1,15 +1,11 @@
 import React, { useMemo } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-import { AnalysisResult, ToastType } from '../../types';
-import { Flame, PartyPopper, Lightbulb, ArrowRight, Dumbbell, TrendingUp, CreditCard, ShieldCheck, Coins, Wallet, Share2 } from 'lucide-react';
-
-interface ResultsViewProps {
-  data: AnalysisResult;
-}
+import { ToastType } from '../types';
+import { Flame, PartyPopper, Lightbulb, ArrowRight, Dumbbell, TrendingUp, CreditCard, ShieldCheck, Coins, Wallet } from 'lucide-react';
 
 const COLORS = ['#0ea5e9', '#8b5cf6', '#ec4899', '#14b8a6', '#f59e0b', '#ef4444'];
 
-const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
+const ResultsView = ({ data }: { data: any }) => {
   
   const isRoast = data.roastOrToastType === ToastType.ROAST;
   
@@ -21,11 +17,14 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
     const aggregated: Record<string, number> = {};
     let total = 0;
 
-    data.spendSummary.forEach(item => {
-        const cat = item.category;
-        aggregated[cat] = (aggregated[cat] || 0) + item.amount;
-        total += item.amount;
-    });
+    if (Array.isArray(data.spendSummary)) {
+        data.spendSummary.forEach((item: any) => {
+            const cat = item.category;
+            const amount = Number(item.amount);
+            aggregated[cat] = (aggregated[cat] || 0) + amount;
+            total += amount;
+        });
+    }
 
     const chartData = Object.entries(aggregated)
         .map(([name, value], index) => ({
@@ -44,12 +43,6 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
       if (lower.includes('insurance')) return <ShieldCheck className="w-6 h-6" />;
       if (lower.includes('gold')) return <Coins className="w-6 h-6" />;
       return <Wallet className="w-6 h-6" />; // Loan default
-  };
-
-  const handleShare = () => {
-      const text = `💸 Freo Financial Vibe Check 💸\n\nMy Persona: ${data.personaTitle}\nScore: ${data.vibeScore}/100\n\nVerdict: "${data.roastOrToastMessage}"\n\nCheck yours at Freo!`;
-      const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
-      window.open(url, '_blank');
   };
 
   return (
@@ -109,16 +102,6 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
                         {cleanVerdictLabel}
                     </div>
                  </div>
-                 
-                 <div className="flex flex-wrap justify-center md:justify-start gap-3 w-full">
-                    <button 
-                        onClick={handleShare}
-                        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#25D366]/10 text-[#25D366] border border-[#25D366]/30 hover:bg-[#25D366]/20 transition-colors font-bold"
-                    >
-                        <Share2 className="w-4 h-4" />
-                        Share Result
-                    </button>
-                 </div>
             </div>
         </div>
 
@@ -177,7 +160,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
                                 <div className="h-2 w-full bg-black rounded-full overflow-hidden border border-zinc-800">
                                     <div 
                                         className="h-full rounded-full transition-all duration-1000 ease-out group-hover:brightness-125"
-                                        style={{ width: `${(item.value / totalSpend) * 100}%`, backgroundColor: item.color }}
+                                        style={{ width: `${(item.value / (totalSpend || 1)) * 100}%`, backgroundColor: item.color }}
                                     />
                                 </div>
                             </div>
@@ -208,7 +191,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
               </div>
 
               <div className="grid grid-cols-1 gap-4 relative z-10">
-                  {data.swapSuggestions.map((swap, idx) => (
+                  {data.swapSuggestions.map((swap: any, idx: number) => (
                       <div key={idx} className="bg-black rounded-xl p-5 flex flex-col md:flex-row items-center gap-6 border border-zinc-800 hover:border-accent-teal/50 transition-all group">
                           
                           {/* Habit to Break */}
@@ -286,13 +269,6 @@ const ResultsView: React.FC<ResultsViewProps> = ({ data }) => {
                    <p className="text-zinc-200 text-lg leading-relaxed">
                       {data.freoTip}
                    </p>
-              </div>
-
-              <div className="mt-4 pt-4 border-t border-freo-500/20 relative z-10">
-                  <div className="flex items-center justify-between group cursor-pointer">
-                    <span className="text-xs font-bold text-freo-400 uppercase tracking-wider group-hover:text-freo-300 transition-colors">Check App / Website</span>
-                    <ArrowRight className="w-4 h-4 text-zinc-500 group-hover:text-freo-400 transition-colors transform group-hover:translate-x-1" />
-                  </div>
               </div>
           </div>
       </div>

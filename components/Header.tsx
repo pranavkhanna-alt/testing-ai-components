@@ -1,7 +1,7 @@
 import React from 'react';
 import { Sparkles } from 'lucide-react';
 
-const Header: React.FC = () => {
+const Header = () => {
   return (
     <header className="py-10 text-center relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-freo-900/20 rounded-full blur-3xl -z-10 pointer-events-none" />

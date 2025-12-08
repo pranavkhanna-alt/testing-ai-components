@@ -1,19 +1,13 @@
 import React, { useState } from 'react';
-import { ArrowRight, IndianRupee, ChevronLeft, ThumbsUp, ThumbsDown } from 'lucide-react';
-import { QuestionnaireData } from '../../types';
-
-interface QuestionnaireProps {
-  onAnalyze: (data: QuestionnaireData) => void;
-  isLoading: boolean;
-}
+import { ArrowRight, IndianRupee, ChevronLeft, ThumbsUp, ThumbsDown, AlertCircle } from 'lucide-react';
 
 const STEPS = [
   {
     id: 'monthlyIncome',
-    question: "First off, what's your total monthly income?",
+    question: "First off, what's your total monthly income or pocket money?",
     subtext: "Salary, pocket money, freelance work, side hustles - total it up.",
     icon: "💸",
-    placeholder: "e.g. 80000",
+    placeholder: "e.g. 5000 or 80000",
     type: 'number'
   },
   {
@@ -78,36 +72,66 @@ const STEPS = [
   }
 ];
 
-const Questionnaire: React.FC<QuestionnaireProps> = ({ onAnalyze, isLoading }) => {
+const Questionnaire = ({ onAnalyze, isLoading }) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [answers, setAnswers] = useState<any>({});
+  const [answers, setAnswers] = useState({});
+  const [validationError, setValidationError] = useState(null);
+
+  const validateInput = (value, stepId) => {
+      const num = parseFloat(value);
+      
+      if (isNaN(num)) return "Please enter a valid number.";
+      if (num < 0) return "Negative amounts aren't allowed.";
+      if (num > 1000000000) return "That amount seems unrealistic (Max 100 Cr).";
+      
+      // Special check for Income
+      if (stepId === 'monthlyIncome' && num === 0) {
+          return "Income needs to be greater than 0 to analyze.";
+      }
+
+      return null;
+  };
 
   const handleNext = () => {
+    // Validate before moving
+    if (STEPS[currentStep].type === 'number') {
+        const val = answers[STEPS[currentStep].id];
+        const error = validateInput(val, STEPS[currentStep].id);
+        if (error) {
+            setValidationError(error);
+            return;
+        }
+    }
+
+    setValidationError(null);
+
     if (currentStep < STEPS.length - 1) {
       setCurrentStep(curr => curr + 1);
     } else {
-      onAnalyze(answers as QuestionnaireData);
+      onAnalyze(answers);
     }
   };
 
   const handleBack = () => {
+    setValidationError(null);
     if (currentStep > 0) {
       setCurrentStep(curr => curr - 1);
     }
   };
 
-  const handleChange = (value: string) => {
+  const handleChange = (value) => {
+    setValidationError(null);
     setAnswers({ ...answers, [STEPS[currentStep].id]: value });
   };
 
-  const handleOptionSelect = (value: string) => {
+  const handleOptionSelect = (value) => {
       setAnswers({ ...answers, [STEPS[currentStep].id]: value });
       // Add a small delay for better UX
       setTimeout(() => {
           if (currentStep < STEPS.length - 1) {
               setCurrentStep(curr => curr + 1);
           } else {
-              onAnalyze({ ...answers, [STEPS[currentStep].id]: value } as QuestionnaireData);
+              onAnalyze({ ...answers, [STEPS[currentStep].id]: value });
           }
       }, 200);
   };
@@ -141,19 +165,30 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ onAnalyze, isLoading }) =
             </p>
 
             {currentQuestion.type === 'number' ? (
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <IndianRupee className="h-5 w-5 text-zinc-400" />
-                  </div>
-                  <input
-                    type="number"
-                    value={answers[currentQuestion.id] || ''}
-                    onChange={(e) => handleChange(e.target.value)}
-                    placeholder={currentQuestion.placeholder}
-                    onKeyDown={(e) => e.key === 'Enter' && answers[currentQuestion.id] && handleNext()}
-                    className="w-full bg-black border border-zinc-800 text-white text-xl rounded-xl pl-10 pr-4 py-4 focus:ring-2 focus:ring-freo-500 focus:border-transparent outline-none placeholder-zinc-600 transition-all"
-                    autoFocus
-                  />
+                <div className="space-y-3">
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <IndianRupee className="h-5 w-5 text-zinc-400" />
+                      </div>
+                      <input
+                        type="number"
+                        min="0"
+                        value={answers[currentQuestion.id] || ''}
+                        onChange={(e) => handleChange(e.target.value)}
+                        placeholder={currentQuestion.placeholder}
+                        onKeyDown={(e) => e.key === 'Enter' && answers[currentQuestion.id] && handleNext()}
+                        className={`w-full bg-black border text-white text-xl rounded-xl pl-10 pr-4 py-4 focus:ring-2 focus:ring-freo-500 focus:border-transparent outline-none placeholder-zinc-600 transition-all ${
+                            validationError ? 'border-red-500/50 focus:ring-red-500' : 'border-zinc-800'
+                        }`}
+                        autoFocus
+                      />
+                    </div>
+                    {validationError && (
+                        <div className="flex items-center gap-2 text-red-400 text-sm animate-pulse">
+                            <AlertCircle className="w-4 h-4" />
+                            {validationError}
+                        </div>
+                    )}
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

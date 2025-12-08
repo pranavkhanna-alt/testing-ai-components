@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { AnalysisResult, ToastType, QuestionnaireData } from "../../types";
+import { ToastType } from "../types";
 
 const getClient = () => {
   const apiKey = process.env.API_KEY;
@@ -49,8 +49,8 @@ const SCHEMA = {
 };
 
 export const analyzeFinancialData = async (
-  data: QuestionnaireData
-): Promise<AnalysisResult> => {
+  data
+) => {
   const ai = getClient();
 
   const prompt = `
@@ -58,15 +58,22 @@ export const analyzeFinancialData = async (
     Analyze the user's financial profile based on their answers.
     
     USER DATA:
-    - Monthly Income: ₹${data.monthlyIncome}
+    - Monthly Income (includes Pocket Money): ₹${data.monthlyIncome}
     - Survival Mode (Rent/EMI/Loans): ₹${data.rentAndEmi}
     - Survival Mode (Groceries/Bills): ₹${data.groceries}
-    - Food/Dining (Leisure): ₹${data.foodAndDining}
-    - Vices (Cigs/Alcohol): ₹${data.vices}
+    - Leisure (Food/Dining): ₹${data.foodAndDining}
+    - Leisure (Vices/Cigs/Alcohol): ₹${data.vices}
     - The Flex (Shopping/Fun/Trips): ₹${data.shoppingAndEntertainment}
     - Future You (Investments/SIPs): ₹${data.investments}
     - Has Insurance: ${data.hasInsurance}
     
+    LOGIC GUARDRAILS & EDGE CASES:
+    1. **Expenses > Income**: If total spending exceeds income, label them as "Living Beyond Means" or "Debt Mode" and lower the score drastically (0-30). Be empathetic but firm.
+    2. **Zero Expenses**: If categories have 0 spend, do NOT assume they are "saving". Mention it wittily (e.g. "Living rent-free? Lucky you.").
+    3. **Tone Check**: 
+       - IF (Food/Dining <= 3000 AND Vices <= 2000): Use a gentler, more encouraging tone ("Keep it up!").
+       - IF (Food/Dining > 3000 OR Vices > 2000): Be more open and direct about the waste ("Reality check time").
+
     GOALS:
     1. **Categorize**: Group the amounts into the 4 Life Components:
        - 'Survival Mode 🏠' = Rent/EMI + Groceries
@@ -78,22 +85,24 @@ export const analyzeFinancialData = async (
        - Calculate 0-100. 
        - Label: Use universal, descriptive terms (e.g., "Budget Pro", "Carefree Spender", "Balanced Planner"). 
        - STRICTLY NO obscure Gen-Z slang (like "Down Bad" or "NPC"). Make it understandable for ages 18-60.
+       - STRICTLY NO punctuation in the label (No '!').
 
     3. **Tone & Language Guidelines**: 
        - **Tone**: Witty, engaging, and professional. Think "smart financial coach".
        - **Prohibited**: Do NOT use offensive, abusive, or rude language. Do not insult the user.
        - **Critique**: If spending is bad, provide a "Reality Check" rather than a mean roast. Be constructive.
+       - **Context**: If income is low (likely pocket money), adjust advice to be age-appropriate (e.g., suggesting small savings vs big investments).
        
     4. **Freo Product Match (Smart Logic)**:
        - **Step 1: Determine Base Product**:
          - **Freo Pay**: High daily small spends (Food, Dining).
-         - **Freo Personal Loan**: High big-ticket spend or debt consolidation needs.
+         - **Freo Personal Loan**: High big-ticket spend, debt consolidation needs, or if Expenses > Income.
          - **Freo Gold Loan**: High survival costs (needs liquidity).
-         - **Freo Save**: If they have surplus but no investments.
+         - **Freo Gold** (Digital Gold): If they have surplus but no investments (Low 'Future You' score).
        
        - **Step 2: Insurance Logic (Add-on)**:
          - IF 'Has Insurance' is 'no': 
-           - **Action**: You MUST recommend the Base Product AND Insurance together.
+           - **Action**: You MUST recommend the Base Product AND Freo Insurance together.
            - **Output Format**: "{Base Product} + Freo Insurance"
            - **Tip Text**: Pitch the base product first, then add a polite but firm nudge: "Also, securing your future is non-negotiable—consider adding Freo Insurance."
          - IF 'Has Insurance' is 'yes':
@@ -123,7 +132,7 @@ export const analyzeFinancialData = async (
       throw new Error("No response from Gemini.");
     }
 
-    return JSON.parse(textResponse) as AnalysisResult;
+    return JSON.parse(textResponse);
   } catch (error) {
     console.error("Gemini Analysis Error:", error);
     throw error;

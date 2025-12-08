@@ -3,15 +3,14 @@ import Header from './components/Header';
 import Questionnaire from './components/Questionnaire';
 import ResultsView from './components/ResultsView';
 import { analyzeFinancialData } from './services/geminiService';
-import { AnalysisResult, QuestionnaireData } from './../types';
 import { AlertCircle } from 'lucide-react';
 
-const App: React.FC = () => {
+const App = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState<AnalysisResult | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
 
-  const handleAnalyze = async (data: QuestionnaireData) => {
+  const handleAnalyze = async (data) => {
     setIsLoading(true);
     setError(null);
     setResult(null);
@@ -19,7 +18,7 @@ const App: React.FC = () => {
     try {
       const analysis = await analyzeFinancialData(data);
       setResult(analysis);
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
       setError("Oops! The financial AI had a hiccup. Please try again or check your API key.");
     } finally {

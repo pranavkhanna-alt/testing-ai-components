@@ -1,18 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { Upload, FileText, X, Image as ImageIcon } from 'lucide-react';
 
-interface AnalysisInputProps {
-  onAnalyze: (text: string, file?: File) => void;
-  isLoading: boolean;
-}
-
-const AnalysisInput: React.FC<AnalysisInputProps> = ({ onAnalyze, isLoading }) => {
-  const [activeTab, setActiveTab] = useState<'text' | 'image'>('text');
+const AnalysisInput = ({ onAnalyze, isLoading }) => {
+  const [activeTab, setActiveTab] = useState('text');
   const [text, setText] = useState('');
-  const [file, setFile] = useState<File | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [file, setFile] = useState(null);
+  const fileInputRef = useRef(null);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
     }
