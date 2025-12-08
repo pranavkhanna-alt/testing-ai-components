@@ -82,13 +82,16 @@ const Questionnaire = ({ onAnalyze, isLoading }) => {
       
       if (isNaN(num)) return "Please enter a valid number.";
       if (num < 0) return "Negative amounts aren't allowed.";
-      if (num > 1000000000) return "That amount seems unrealistic (Max 100 Cr).";
       
       // Special check for Income
-      if (stepId === 'monthlyIncome' && num === 0) {
-          return "Income needs to be greater than 0 to analyze.";
+      if (stepId === 'monthlyIncome') {
+          if (num === 0) return "Income needs to be greater than 0 to analyze.";
+          if (num > 100000000) return "That amount seems unrealistic (Max 10 Cr).";
       }
 
+      // Global limit for others (100 Cr)
+      if (num > 1000000000) return "That amount seems unrealistic (Max 100 Cr).";
+      
       return null;
   };
 
