@@ -86,11 +86,10 @@ const Questionnaire = ({ onAnalyze, isLoading }) => {
       // Special check for Income
       if (stepId === 'monthlyIncome') {
           if (num === 0) return "Income needs to be greater than 0 to analyze.";
-          if (num > 100000000) return "That amount seems unrealistic (Max 10 Cr).";
       }
 
-      // Global limit for others (100 Cr)
-      if (num > 1000000000) return "That amount seems unrealistic (Max 100 Cr).";
+      // Global limit for ALL inputs (10 Crores)
+      if (num > 100000000) return "That amount seems unrealistic (Max 10 Cr).";
       
       return null;
   };
@@ -144,7 +143,12 @@ const Questionnaire = ({ onAnalyze, isLoading }) => {
 
   return (
     <div className="max-w-xl mx-auto">
-      {/* Progress Bar */}
+      {/* Progress Bar & Counter */}
+      <div className="flex items-center justify-between mb-2 px-1">
+         <span className="text-zinc-500 text-sm font-medium tracking-widest uppercase">
+            Question {currentStep + 1}/{STEPS.length}
+         </span>
+      </div>
       <div className="w-full h-2 bg-zinc-800 rounded-full mb-8 overflow-hidden">
         <div 
           className="h-full bg-gradient-to-r from-freo-500 to-accent-teal transition-all duration-500 ease-out"

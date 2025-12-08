@@ -68,7 +68,10 @@ export const analyzeFinancialData = async (
     - Has Insurance: ${data.hasInsurance}
     
     LOGIC GUARDRAILS & EDGE CASES:
-    1. **Expenses > Income**: If total spending exceeds income, label them as "Living Beyond Means" or "Debt Mode" and lower the score drastically (0-30). Be empathetic but firm.
+    1. **Expenses > Income**: 
+       - If total spending exceeds monthly income, label them as "Living Beyond Means" or "Debt Mode".
+       - Lower the vibe score drastically (0-30).
+       - **MANDATORY**: You MUST explicitly include the phrase "Your expenses are crossing your income" in the 'summaryText' or 'roastOrToastMessage'.
     2. **Zero Expenses**: If categories have 0 spend, do NOT assume they are "saving". Mention it wittily (e.g. "Living rent-free? Lucky you.").
     3. **Tone Check**: 
        - IF (Food/Dining <= 3000 AND Vices <= 2000): Use a gentler, more encouraging tone ("Keep it up!").
